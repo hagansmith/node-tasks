@@ -1,0 +1,3 @@
+[submodule "node-tasks"]
+	path = node-tasks
+	url = ./cli/node-tasks
