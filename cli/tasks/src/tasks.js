@@ -15,9 +15,6 @@ methods: {
       data.id = event.path[2].id;
       data.name = event.target.value;
       axios.put(`http://localhost:3000/tasks/${data.id}`, data).then((response)=>{
-        let updated = this.tasks.findIndex(task => task.id == data.id)
-        console.log(this.tasks[updated])
-        //this.tasks[updated] = response.data
         this.success = 'Task name updated'
         this.showSuccess = true;
       })
