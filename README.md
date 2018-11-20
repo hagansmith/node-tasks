@@ -16,6 +16,8 @@ rename api/db.example.js to api/db.js and update the database, username and, pas
 
 #run server
 node server.js
+
+watching on localhost:3000
 ```
 
 ## Client Setup
@@ -26,6 +28,8 @@ npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
+
+browser should open to localhost:8080
 
 # build for production with minification
 npm run build
