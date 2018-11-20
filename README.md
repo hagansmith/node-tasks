@@ -1,8 +1,24 @@
-# tasks
+# Node-Tasks
+> tasks Single Page App with node.js backend
 
-> tasks SPA with node.js
+## Server Setup
+``` bash
+Navigate to the the api directory
 
-## Build Setup
+# install dependencies
+npm install
+
+# setup mySQL
+setup mySQL db with tasks table see models folder or use sequelize migrations
+
+# update connection
+rename api/db.example.js to api/db.js and update the database, username and, password
+
+#run server
+node server.js
+```
+
+## Client Setup
 
 ``` bash
 # install dependencies
@@ -14,5 +30,3 @@ npm run dev
 # build for production with minification
 npm run build
 ```
-
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
