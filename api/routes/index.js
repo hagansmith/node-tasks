@@ -42,11 +42,10 @@ module.exports = function(db) {
             if (!task) {
                 return next(new errors.ResourceNotFoundError('A task with that ID could not be found'))
             }
-            if (data.completed) {
-                task.completed = true
-            } else {
-                task.completed = false
+            if (data.name) {
+                task.name = data.name
             }
+            task.completed = data.completed
             task.save(task).then((result) => {
                 return res.send(200, result)
             });

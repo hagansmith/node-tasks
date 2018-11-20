@@ -1,5 +1,4 @@
-const config = require('./config'),
-  restify = require('restify'),
+const restify = require('restify'),
   restifyPlugins = require('restify-plugins')
   corsMiddleware = require('restify-cors-middleware')
 
@@ -14,9 +13,8 @@ const cors = corsMiddleware({
  * Initialize Server
  */
 const server = restify.createServer({
-    name    : config.name,
-    version : config.version,
-    url : config.hostname,
+    name    : 'Node-Tasks',
+    url : 'http://localhost:3000',
 });
 
 server.use(restifyPlugins.jsonBodyParser({ mapParams: true }));
@@ -26,7 +24,7 @@ server.use(restifyPlugins.fullResponse());
 server.pre(cors.preflight)
 server.use(cors.actual)
 
-server.listen(config.port, () => {
+server.listen(3000, () => {
     require('./routes')(server);
     console.log('%s listening at %s', server.name, server.url);
 });

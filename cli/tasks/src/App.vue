@@ -4,7 +4,21 @@
       <div class="jumbotron jumbotron-fluid">
         <h1>Node Tasks</h1>
       </div>
+      <b-alert class="col-lg-4 offset-lg-4 col-sm-10 offset-sm-1"
+            variant="danger"
+            dismissible
+            :show=showError
+            @dismissed="showError=false">
+            {{errors}}
+    </b-alert>
+    <b-alert class="col-lg-4 offset-lg-4 col-sm-10 offset-sm-1"
+            variant="success" 
+            dismissible :show=showSuccess 
+            @dismissed="showSuccess=false">
+            {{success}}
+    </b-alert>
     </header>
+    
     <div id="task-list" class="col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
     <!-- <table class="table">
       <thead>
@@ -22,10 +36,10 @@
       </tbody>
     </table> -->
     <div class="input-group mb-3">
-      <input type="text" class="form-control" id="new-task" placeholder="New Task" aria-label="New Task Name" v-on:keyup.enter="taskAdd" v-model="taskName">
+      <input type="text" class="form-control" id="new-task" placeholder="Add New Task & Press Enter" aria-label="New Task Name" v-on:keyup.enter="taskAdd" v-model="taskName">
     </div> 
     <ul class="list-group">
-      <li class="list-group-item" v-for='task in tasks' :id="task.id">
+      <li class="list-group-item" v-for='task in tasks' :id="task.id" :key="task.id">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Task Name" aria-label="Task Name" v-model="task.name" v-on:change="taskUpdate">
           <div class="input-group-append">
@@ -42,6 +56,7 @@
 
 <script>
 import axios from "axios";
+import taskMethods from "./tasks"
 
 export default {
   name: "app",
@@ -50,105 +65,25 @@ export default {
       taskName: '',
       tasks: [],
       errors: [],
+      success: '',
+      showError: false,
+      showSuccess: false,
     };
   },
+  // Get tasks on load
   async created() {
     try {
       const response = await axios.get(`http://localhost:3000/tasks`);
-      this.tasks = response.data;
+      this.tasks = (response.data).reverse();
     } catch (e) {
-      this.errors.push(e);
+      this.errors = (e);
+      this.showError = true;
     }
   },
-  methods: {
-    taskAdd(event) {
-      let data = {}
-      data.name = event.target.value
-      axios.post(`http://localhost:3000/tasks`, data).then((response) => {
-        this.tasks.push(response.data)
-        this.taskName = ''
-      })
-    },
-    taskUpdate(event) {
-      let data = {};
-      data.id = event.path[2].id;
-      data.name = event.target.value;
-      axios.put(`http://localhost:3000/tasks/${data.id}`, data).then((response)=>{
-        this.tasks[data.id] = response.data
-        alert(`Task name updated`)
-        console.log(response);
-      })
-    },
-    taskComplete(event) {
-      let data = {};
-      data.id = event.path[3].id;
-      if (event.target.id == "true") {
-        data.completed = true
-      } else {
-        data.completed = false
-      }
-      axios.put(`http://localhost:3000/tasks/${data.id}`, data).then((response)=>{
-        this.tasks[data.id]= response.data
-      })
-    },
-    taskDelete(event) {
-      let id = event.path[3].id;
-      axios.delete(`http://localhost:3000/tasks/${id}`).then((response)=> {
-        this.tasks.splice(this.tasks.indexOf(id), 1)
-      })
-    }
-  }
+  mixins:[taskMethods]
 };
 
 </script>
-
 <style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 160px;
-}
-
-h1,
-h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-
-.jumbotron {
-  background-color: white;
-  filter: drop-shadow(0 0 0.25rem lightgrey);
-  color: #42b983;
-  padding: 0;
-  margin: 0
-}
-
-h1 {
-  font-size: 5rem;
-  margin: 0;
-}
-
-.task-list {
-  margin-top: 40px;
-}
-
-.status {
-  width: 9em;
-}
+@import './style.scss'
 </style>
