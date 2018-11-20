@@ -1,5 +1,6 @@
 # Node-Tasks
 > tasks Single Page App with node.js backend
+![node-tasks](https://github.com/hagansmith/node-tasks/blob/master/node-tasks.png)
 
 ## Server Setup
 ``` bash
